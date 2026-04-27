@@ -15,7 +15,6 @@ The system is designed to distribute CPU-intensive tasks across multiple backend
 
 ## 🛠️ Folder Structure
 
-Based on the project organization:
 * 📁 **load-balancer/**: Contains the source code for the Manager and Worker nodes.
 * 📁 **Excel/**: Detailed benchmarking data and the master comparison sheet.
 * 📁 **Photos/**: Screenshots of terminal logs, Docker status, and performance charts.
@@ -31,19 +30,22 @@ $$H(n) = \sum_{i=1}^{n \times 10^6} \frac{\sqrt{i}\sin(i)}{\ln(i+1)}$$
 
 ---
 
-## 📊 Benchmarking Results
+## 📊 Benchmarking Results (10,000 Requests)
 
-We tested 10,000 requests with a concurrency level of 200. Here is the summary of our findings:
+We tested 10,000 requests with a concurrency level of 200. Here are the **exact** findings from our benchmarking:
 
 | Algorithm | Avg Response Time (ms) | Min Time (ms) | Max Time (ms) |
 | :--- | :--- | :--- | :--- |
-| **Least Connection** | 42,113.86 | 16 | 118,090 |
-| **Round Robin** | 42,917.14 | 12 | 124,134 |
 | **Random** | 41,689.58 | 12 | 161,784 |
-| **Weighted RR** | 63,907.81 | 7 | 204,439 |
-| **IP Hash** | 128,314.51 | 355 | 844,448 |
+| **Least Connection** | 42,113.87 | 606 | 111,809 |
+| **Round Robin** | 42,917.15 | 12 | 124,134 |
+| **Weighted RR** | 63,907.82 | 7 | 204,439 |
+| **IP Hash** | 128,314.52 | 635 | 584,448 |
 
-> **Key Insight:** **Least Connection** provided the best stability (lowest Max Latency), while **IP Hash** successfully demonstrated Session Persistence by pinning all requests to a single node.
+> **💡 Key Engineering Insights:**
+> * **Best Stability:** **Least Connection** outperformed all others in stability, maintaining the **lowest Max Latency (111,809 ms)**, which effectively prevented server bottlenecks.
+> * **Session Persistence Proof:** **IP Hash** recorded a significantly higher average and max time. This confirms that all 10,000 requests were successfully pinned to a single worker based on the client IP, demonstrating correct session persistence logic.
+> * **Efficiency:** **Random** showed a fast average but high variance (Max Time), making it less predictable than **Round Robin**.
 
 ---
 
