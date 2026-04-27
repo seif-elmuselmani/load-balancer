@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  manager:
+    build: .
+    command: npm run start-manager
+    ports:
+      - "8090:8090"
+    depends_on:
+      - worker1
+      - worker2
+      - worker3
+    networks:
+      - cluster-net
+
+  worker1:
+    build: .
+    command: npm run start-worker
+    environment:
+      - WORKER_ID=worker1
+      - PORT=8080
+    networks:
+      - cluster-net
+
+  worker2:
+    build: .
+    command: npm run start-worker
+    environment:
+      - WORKER_ID=worker2
+      - PORT=8080
+    networks:
+      - cluster-net
+
+  worker3:
+    build: .
+    command: npm run start-worker
+    environment:
+      - WORKER_ID=worker3
+      - PORT=8080
+    networks:
+      - cluster-net
+
+networks:
+  cluster-net:
+    driver: bridge

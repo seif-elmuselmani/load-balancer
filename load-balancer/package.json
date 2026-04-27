@@ -1,0 +1,14 @@
+{
+  "name": "load-balancer-sim",
+  "version": "1.0.0",
+  "description": "Load Balancer and Distributed System Simulation",
+  "main": "manager.js",
+  "scripts": {
+    "start-manager": "node manager.js",
+    "start-worker": "node worker.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "express": "^4.19.2"
+  }
+}
